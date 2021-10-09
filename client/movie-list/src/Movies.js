@@ -1,71 +1,105 @@
 import React, {useEffect, useState} from 'react'
+import axios from 'axios'
+import Table from './Table'
 
 export const Movies = () =>{
     const [movies, setMovies] = useState([])
     const [winners, setWinners] = useState([])
+    const [display, setDisplay] = useState([])
+    const [displayWinners, setDisplayWinner] = useState(false)
+    const [isLoading, setLoading] = useState(true)
+
+    const getMovies = async () =>{
+        const response = await axios.get('http://localhost:5000/movies')
+        const results = response['data']['results']
+        setMovies(results)
+        setDisplay(results)
+        sortWinners(results)
+        setLoading(false)
+    }
 
     useEffect(()=>{
-        fetch("http://localhost:5000/movies")
-        .then(response=> response.json())
-        .then(data => setMovies(data["results"]))
+        getMovies()
     }, [])
 
-    const sortWinners = () => {
+    const sortWinners = (movies) => {
        const winners = movies.map((films)=>{
            const newFilms = films['films'].filter(film=>{
                 return film['Winner'] === true
            })
            return {films: newFilms, year: films['year']}
        })
-        setMovies(winners)
-        //setWinners(winners)
+       setWinners(winners)
     }
 
-    const sortYears = () => {
-        const reversed = movies.slice('').reverse()
-        setMovies(reversed)
+    const sortByYear = () => {
+        const reversed = display.slice('').reverse()
+        setDisplay(reversed)
     }
 
-    const displayTable = () =>{
-        return(
-            <div className="centered">
-           <table>
-             <tbody>
-            <tr>
-                <th>Year</th>
-                <th>Film Name</th>
-                <th>Win/Lose</th>
-                <th>Country</th>
-            </tr>
-                
-                {movies.map(films =>(
-                    films['films'].map(film=>(
-                        <tr>
-                            <td>{films['year']}</td>
-                            <td>{film["Film"]}</td>
-                            <td>{film["Winner"] ? 'Yes' : 'No'}</td>
-                            <td>{film["country"]}</td>
-                        </tr>
-                    ))
-                ))}
-            
-            
+    const showWinners = () => {
+        if(!displayWinners){
+            setDisplayWinner(true)
+            setDisplay(winners)
+        }
+        else {
+            setDisplayWinner(false)
+            setDisplay(movies)
+        }
+    }
+
+    // const displayTable = (display) =>{
+    //     return(
+    //         <div className="centered container">
+    //             <table className="table table-striped table-hover table-bordered">
+    //                 <tbody>
+    //                 <tr className="table-dark">
+    //                     <th>Year&nbsp;&nbsp;
+    //                         <button onClick={sortByYear}>▲▼</button>
+    //                     </th>
+    //                     <th>Film Name</th>
+    //                     <th>Win/Lose&nbsp;&nbsp;
+    //                     {displayWinners === false ? 
+    //                     <button onClick={showWinners}>Show Winners ▼</button> 
+    //                     : <button onClick={showWinners}>Show All ▲</button>}
+    //                     </th>
+    //                     <th>Country</th>
+    //                 </tr>
     
-            
-            </tbody>
-          </table>
-          </div>
-        )
+    //                     {display.map(films =>(
+    //                         films['films'].map(film=>(
+    //                             <tr>
+    //                                 <td>{films['year']}</td>
+    //                                 <td>{film["Film"]}</td>
+    //                                 <td>{film["Winner"] ? 'Yes' : 'No'}</td>
+    //                                 <td>{film["country"]}</td>
+    //                             </tr>
+    //                         ))
+    //                     ))}
+    //                 </tbody>
+    //             </table>
+    //         </div>
+           
+    //     )
         
-    }
+    // }
           
 
     return (
-        <div>
-            <button onClick={sortWinners}>Winners</button>
-            <button onClick={sortYears}>Years</button>
-            <h1>Testing</h1>
-            <div>{displayTable()}</div>
+        <div className= "centered">
+            {/* <div>{displayTable(display)}</div> */}
+            {isLoading ? 
+                <h2>Scraping in progress...</h2>
+                :
+                <Table 
+                display={display} 
+                sortByYear={sortByYear}
+                showWinners={showWinners}
+                displayWinners={displayWinners}
+                />
+            }
+           
+
         </div>
         
     )

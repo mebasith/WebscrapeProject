@@ -1,12 +1,14 @@
-import React, {useEffect, useState} from "react"
+import React from "react"
 import { Movies } from "./Movies"
-import './App.css';
+
 
 
 function App() {
   return (
     <div className="App">
-      <h3>Testing</h3>
+       <nav>
+          <h1>Oscar Winners</h1>
+        </nav>
       <Movies/>
     </div>
   );
