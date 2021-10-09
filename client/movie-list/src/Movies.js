@@ -44,7 +44,7 @@ export const Movies = () =>{
                             <td>{films['year']}</td>
                             <td>{film["Film"]}</td>
                             <td>{film["Winner"] ? 'Yes' : 'No'}</td>
-                            <td>USA</td>
+                            <td>{film["country"]}</td>
                         </tr>
                     ))
                 ))}
