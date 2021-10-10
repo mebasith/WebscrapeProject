@@ -11,12 +11,13 @@ main = Blueprint('main', __name__)
 
 @main.route('/movies', methods=['GET'])
 def get_movies():
+    #scrape the YipitData url
     url = 'http://oscars.yipitdata.com/'
     r = requests.get(url)
     soup = BeautifulSoup(r.content, 'html.parser')
     movies = str(soup)
     data = json.loads(movies)
-    count=0
+    #scrape for the country and add to the data object
     for item in data['results']:
         count = count+1
         for film in item["films"]:
