@@ -31,9 +31,7 @@ const Table = ({display, sortByYear, showWinners, displayWinners}) =>{
                 </tbody>
             </table>
         </div>
-       
     )
-    
 }
 
 export default Table

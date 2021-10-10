@@ -9,6 +9,7 @@ export const Movies = () =>{
     const [displayWinners, setDisplayWinner] = useState(false)
     const [isLoading, setLoading] = useState(true)
 
+    //the below function will be run in the useEffect function to retrieve the data and set the initial states
     const getMovies = async () =>{
         const response = await axios.get('http://localhost:5000/movies')
         const results = response['data']['results']
@@ -18,10 +19,12 @@ export const Movies = () =>{
         setLoading(false)
     }
 
+    //the below useEffect function will retrieve the data upon the component's initial mount
     useEffect(()=>{
         getMovies()
     }, [])
 
+    //the below function will pull the set of films that won oscars
     const sortWinners = (movies) => {
        const winners = movies.map((films)=>{
            const newFilms = films['films'].filter(film=>{
@@ -32,11 +35,13 @@ export const Movies = () =>{
        setWinners(winners)
     }
 
+    //the below function will handle reversing the chronological order of the films
     const sortByYear = () => {
         const reversed = display.slice('').reverse()
         setDisplay(reversed)
     }
 
+    //the below function handles whether or not to show just the winners
     const showWinners = () => {
         if(!displayWinners){
             setDisplayWinner(true)
