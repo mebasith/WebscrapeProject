@@ -6,7 +6,7 @@
 
 ## Run Backend Server
 2. Open a terminal session
-3. CD into the `server` directory
+3. cd into the `server` directory
 4. Run virtual environment by running command `pipenv shell` 
 5. Install dependencies with `pip install -r requirements.txt`
 6. Run the flask app with `flask run`
@@ -14,7 +14,7 @@
 
 ## Run Frontend server
 8. Open a separate terminal session
-9. CD into `client` directory
+9. cd into `client` directory
 10. Run `npm install` from your terminal
 11. To run the application run `npm start`
 12. Navigate to [localhost:1337](http://localhost:1337) 
