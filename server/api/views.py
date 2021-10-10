@@ -19,9 +19,7 @@ def get_movies():
     data = json.loads(movies)
     #scrape for the country and add to the data object
     for item in data['results']:
-        count = count+1
         for film in item["films"]:
-            count = count+1
             try:
                 url = film["Detail URL"]
                 country = find_country_details(url)
